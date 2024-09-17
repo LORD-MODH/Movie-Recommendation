@@ -7,4 +7,3 @@ torch
 spacy
 google-generativeai
 pandas
-subprocess

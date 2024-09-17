@@ -148,7 +148,7 @@ def facial_expression_recognition():
     st.title("📸 Facial Expression Recognition")
 
     try:
-        face.Camera()
+        Camera()
         st.write("Use your camera to detect facial expressions in real-time.")
     except Exception as e:
         st.error(f"Error accessing the camera: {e}")

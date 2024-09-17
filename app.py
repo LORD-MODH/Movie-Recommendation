@@ -2,19 +2,20 @@ import streamlit as st
 import google.generativeai as genai
 import pandas as pd
 import re
-import nltk
-from nltk.stem import WordNetLemmatizer
+import spacy
 from deepface import DeepFace
 from PIL import Image
 import numpy as np
 import cv2
-from nltk.tokenize import word_tokenize
 
 st.set_page_config(
     page_title="Movie Chatbot with FER",
     layout="centered",
     initial_sidebar_state="auto",
 )
+
+nlp = spacy.load("en_core_web_sm")
+
 def Camera():
     st.write("Please use the camera below to capture an image.")
 
@@ -42,14 +43,6 @@ def Camera():
         st.image(image, caption='Your Picture', use_column_width=True)
     else:
         st.write("Waiting for an image...")
-        
-@st.cache_resource 
-def download_nltk():
-    nltk.download('punkt', download_dir='/home/appuser/nltk_data')
-    nltk.download('wordnet', download_dir='/home/appuser/nltk_data')
-    nltk.download('omw-1.4', download_dir='/home/appuser/nltk_data')
-download_nltk()
-
 
 st.sidebar.title("Navigation")
 app_mode = st.sidebar.selectbox("Go to", ["Movie Chatbot", "Facial Expression Recognition"])
@@ -66,7 +59,6 @@ def remove_year_from_title(title):
 
 @st.cache_data
 def load_and_lemmatize_keywords():
-    lemmatizer = WordNetLemmatizer()
     movie_keywords = [
         'movie', 'film', 'actor', 'actress', 'director', 'release',
         'trailer', 'cinema', 'genre', 'plot', 'character', 'rating',
@@ -81,12 +73,12 @@ def load_and_lemmatize_keywords():
 
     lemmatized_keywords = set()
     for keyword in movie_keywords:
-        tokens = word_tokenize(keyword)
-        lemmas = [lemmatizer.lemmatize(token) for token in tokens]
+        doc = nlp(keyword)
+        lemmas = [token.lemma_ for token in doc]
         lemmatized_keywords.update(lemmas)
     for title in title_list:
-        tokens = word_tokenize(title)
-        lemmas = [lemmatizer.lemmatize(token) for token in tokens]
+        doc = nlp(title)
+        lemmas = [token.lemma_ for token in doc]
         lemmatized_keywords.update(lemmas)
 
     return lemmatized_keywords
@@ -94,14 +86,8 @@ def load_and_lemmatize_keywords():
 lemmatized_keywords = load_and_lemmatize_keywords()
 
 def is_movie_related(query):
-    if not lemmatized_keywords:
-        return False
-
-    lemmatizer = WordNetLemmatizer()
-    query_tokens = word_tokenize(query.lower())
-    query_lemmas = set(lemmatizer.lemmatize(token) for token in query_tokens)
-
-    return not query_lemmas.isdisjoint(lemmatized_keywords)
+    query_tokens = [token.lemma_ for token in nlp(query.lower())]
+    return not set(query_tokens).isdisjoint(lemmatized_keywords)
 
 def generate_gemini_response(prompt):
     try:

@@ -7,3 +7,4 @@ torch
 spacy
 google-generativeai
 pandas
+tf-keras

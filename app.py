@@ -43,12 +43,11 @@ def Camera():
     else:
         st.write("Waiting for an image...")
         
-@st.cache_resource
+@st.cache_resource 
 def download_nltk():
-    nltk.download('punkt')
-    nltk.download('wordnet')
-    nltk.download('omw-1.4')
-
+    nltk.download('punkt', download_dir='/home/appuser/nltk_data')
+    nltk.download('wordnet', download_dir='/home/appuser/nltk_data')
+    nltk.download('omw-1.4', download_dir='/home/appuser/nltk_data')
 download_nltk()
 
 

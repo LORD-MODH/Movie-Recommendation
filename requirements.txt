@@ -4,9 +4,9 @@ Pillow
 opencv-python-headless==4.5.5.64
 deepface
 torch
-tensorflow==2.15.0  # Downgrade to avoid issues with KerasTensor
+tensorflow==2.16.1
 keras==2.9.0
 google-generativeai
 pandas
 nltk
-tf-keras  # To ensure compatibility with legacy Keras
+tf-keras

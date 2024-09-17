@@ -1,7 +1,6 @@
 streamlit
 numpy
 Pillow
-opencv-python-headless==4.5.5.64
 deepface
 torch
 tensorflow==2.16.1
@@ -10,3 +9,5 @@ google-generativeai
 pandas
 nltk
 tf-keras
+opencv-python-headless==4.5.5.64
+

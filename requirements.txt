@@ -1,5 +1,5 @@
 tf-keras
-retinaface
+mtcnn
 streamlit
 numpy
 Pillow

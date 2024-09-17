@@ -4,7 +4,10 @@ import pandas as pd
 import re
 import nltk
 from nltk.stem import WordNetLemmatizer
-from nltk.tokenize import word_tokenize
+from deepface import DeepFace
+from PIL import Image
+import numpy as np
+import cv2from nltk.tokenize import word_tokenize
 
 st.set_page_config(
     page_title="Movie Chatbot with FER",

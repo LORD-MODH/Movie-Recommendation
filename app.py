@@ -25,7 +25,8 @@ download_nltk()
 st.sidebar.title("Navigation")
 app_mode = st.sidebar.selectbox("Go to", ["Movie Chatbot", "Facial Expression Recognition"])
 
-api_key = "AIzaSyCYw0zlKdcUZ_yDzVG3ne7sFY6a5VFsF5g"
+import os
+api_key = os.getenv("API_KEY")
 genai.configure(api_key=api_key)
 
 if "messages" not in st.session_state:

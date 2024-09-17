@@ -46,7 +46,6 @@ def load_and_lemmatize_keywords():
         'thriller', 'romance', 'sci-fi', 'fantasy', 'action', 'cast'
     ]
 
-
     titles = pd.read_csv('./ml-32m/movies.csv')
     titles['title'] = titles['title'].apply(remove_year_from_title).str.lower()
     title_list = titles['title'].tolist()

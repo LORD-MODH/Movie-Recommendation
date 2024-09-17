@@ -5,14 +5,40 @@ import re
 import nltk
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
-import FER as face
 
 st.set_page_config(
     page_title="Movie Chatbot with FER",
     layout="centered",
     initial_sidebar_state="auto",
 )
+def Camera():
+    st.write("Please use the camera below to capture an image.")
 
+    img_file_buffer = st.camera_input("Take a picture")
+
+    if img_file_buffer is not None:
+        image = Image.open(img_file_buffer)
+        img_array = np.array(image)
+
+        img = cv2.cvtColor(img_array, cv2.COLOR_RGB2BGR)
+
+        with st.spinner('Analyzing...'):
+            try:
+                result = DeepFace.analyze(img_path=img, actions=['emotion'], enforce_detection=False)
+                st.success("Analysis Complete!")
+
+                if isinstance(result, list):
+                    result = result[0]
+
+                st.write(f"**Dominant Emotion:** {result['dominant_emotion'].capitalize()}")
+                st.bar_chart(result['emotion'])
+            except Exception as e:
+                st.error(f"An error occurred: {e}")
+
+        st.image(image, caption='Your Picture', use_column_width=True)
+    else:
+        st.write("Waiting for an image...")
+        
 @st.cache_resource
 def download_nltk():
     nltk.download('punkt')

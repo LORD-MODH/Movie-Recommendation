@@ -1,0 +1,10 @@
+streamlit
+numpy
+Pillow
+opencv-python-headless
+deepface
+torch
+tensorflow
+google-generativeai
+pandas
+nltk
